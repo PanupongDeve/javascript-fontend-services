@@ -15,4 +15,5 @@ class FirebaseInitial {
   }
 }
 
-export default new FirebaseInitial();
+export const firebaseRegister = new FirebaseInitial();
+

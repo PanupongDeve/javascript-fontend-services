@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "firebase": "^6.0.2"
+    "@babel/polyfill": "^7.4.4",
+    "firebase": "^6.0.2",
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -18,6 +20,7 @@
   },
   "scripts": {
     "start": "live-server",
-    "build:es6": "webpack --mode production"
+    "build:es6": "webpack --mode production",
+    "build:dev-es6" : "webpack --mode development --watch"
   }
 }
