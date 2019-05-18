@@ -41,8 +41,8 @@ export class Base {
             data.updatedAt = this.moment().format();
             data.status = this.status.Active;
             data.id = (await this.getLastKey()) + 1;
-            await db.collection(this.collection).add(data);
-            return 'Success';
+            const response = await db.collection(this.collection).add(data);
+            return response.id;
         } catch (error) {
             throw Promise.reject(error);
         }
