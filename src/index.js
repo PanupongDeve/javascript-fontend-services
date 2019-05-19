@@ -11,6 +11,10 @@ import {
     firebaseStorage
 } from './FirebaseService/Storage';
 
+import {
+    firebaseAuth
+} from './FirebaseService/Authentication';
+
 console.log('es6 succesfully!');
 
 firebaseRegister.plugin();
