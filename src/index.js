@@ -15,29 +15,36 @@ import {
     firebaseAuth
 } from './FirebaseService/Authentication';
 
+import {
+    servicesWorker
+} from './ServicesWorker';
+
 console.log('es6 succesfully!');
 
-firebaseRegister.plugin();
+servicesWorker.register();
 
-const asyncTest = async () => {
-    const functionReciveData = (data) => {
-        console.log('data', data);
-    }
-    const data = await cat.getAll();
-    console.log('data', data);
+
+// firebaseRegister.plugin();
+
+// const asyncTest = async () => {
+//     const functionReciveData = (data) => {
+//         console.log('data', data);
+//     }
+//     const data = await cat.getAll();
+//     console.log('data', data);
     
-}
+// }
 
-async function handleChangeFile() {
-    console.log('Hello World');
-    var x = document.getElementById("file-upload");
-    const response = await firebaseStorage.upload('images',x.files[0]);
-    console.log('files', response);
-}
+// async function handleChangeFile() {
+//     console.log('Hello World');
+//     var x = document.getElementById("file-upload");
+//     const response = await firebaseStorage.upload('images',x.files[0]);
+//     console.log('files', response);
+// }
 
-window.handleChangeFile = handleChangeFile
+// window.handleChangeFile = handleChangeFile
 
 
 
-asyncTest();
+// asyncTest();
 
