@@ -2,7 +2,7 @@ import {
     firebaseRegister
 } from '../register'
 
-export class Base {
+class FirebaseStorage {
     constructor() {
         this.firebase = firebaseRegister.getFirebase();
     }
@@ -25,4 +25,6 @@ export class Base {
         };
     }
 }
+
+export default FirebaseStorage;
 

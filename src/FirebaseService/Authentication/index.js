@@ -2,11 +2,9 @@ import {
     firebaseRegister
 } from '../register';
 
-import {
-    user
-} from '../CloundFireStore/model';
+import user from '../CloundFireStore/User';
 
-class Authentication {
+class FirebaseAuth {
     constructor() {
         this.firebase = firebaseRegister.getFirebase();
     }
@@ -118,4 +116,4 @@ class Authentication {
     }
 }
 
-export const firebaseAuth = new Authentication();
+export default FirebaseAuth;

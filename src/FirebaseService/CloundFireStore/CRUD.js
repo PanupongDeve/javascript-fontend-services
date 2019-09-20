@@ -1,21 +1,20 @@
-import {
-  firebaseRegister
-} from '../register';
-
 import moment from "moment";
+import FirebaseDataBase from './Database';
 
 
-export class Base {
-  constructor() {
-    this.firebase = firebaseRegister.getFirebase();
+class CRUD {
+  constructor(collection) {
+    this.collection = collection;
+    this.firebaseDB = new FirebaseDataBase();
     this.moment = moment;
     this.status = {
       Active: 'Active',
       Inactive: 'Inactive'
     }
   }
+
   async getLastKey() {
-    const db = this.createDatabase();
+    const db = this.firebaseDB.getFirebaseDatabase();
     const querySnapshot = await db
       .collection(this.collection)
       .orderBy("id", "desc")
@@ -28,15 +27,9 @@ export class Base {
     return key;
   }
 
-  createDatabase() {
-    const db = this.firebase.firestore();
-
-    return db;
-  }
-
   async create(data) {
     try {
-      const db = this.createDatabase();
+      const db = this.firebaseDB.getFirebaseDatabase();
       data.createdAt = this.moment().format();
       data.updatedAt = this.moment().format();
       data.status = this.status.Active;
@@ -48,9 +41,9 @@ export class Base {
     }
   }
 
-  async getAll() {
+  async get() {
     try {
-      const db = this.createDatabase();
+      const db = this.firebaseDB.getFirebaseDatabase();
       const querySnapshot = await db.collection(this.collection).where("status", "==", this.status.Active).get();
       let data = [];
       querySnapshot.forEach(doc => {
@@ -69,7 +62,7 @@ export class Base {
 
   async subscribe(functionReviceData) {
     try {
-      const db = this.createDatabase();
+      const db = this.firebaseDB.getFirebaseDatabase();
       let data = [];
       db.collection(this.collection).where("status", "==", this.status.Active).onSnapshot(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -90,7 +83,7 @@ export class Base {
 
   async getById(documentId) {
     try {
-      const db = this.createDatabase();
+      const db = this.firebaseDB.getFirebaseDatabase();
       const docRef = await db.collection(this.collection).doc(documentId);
       const doc = await docRef.get();
       let objectData = {
@@ -111,14 +104,14 @@ export class Base {
 
   async updateById(documentId, editData) {
     try {
-      const db = this.createDatabase();
+      const db = this.firebaseDB.getFirebaseDatabase();
       editData.updatedAt = this.moment().format();
 
       await db
         .collection(this.collection)
         .doc(documentId)
         .update(editData);
-      return 'update successfully.';
+      return true;
     } catch (error) {
       console.log("Error");
       throw Promise.reject(error);
@@ -127,7 +120,7 @@ export class Base {
 
   async softDeleteById(documentId) {
     try {
-      const db = this.createDatabase();
+      const db = this.firebaseDB.getFirebaseDatabase();
       const deletedData = {
         deletedAt: this.moment().format(),
         status: this.status.Inactive
@@ -137,7 +130,7 @@ export class Base {
         .collection(this.collection)
         .doc(documentId)
         .update(deletedData);
-      return 'deleted successfully';
+      return true;
     } catch (error) {
       console.log("Error");
       throw Promise.reject(error);
@@ -146,7 +139,7 @@ export class Base {
 
   async restoreById(documentId) {
     try {
-      const db = this.createDatabase();
+      const db = this.firebaseDB.getFirebaseDatabase();
       const updatedData = {
         updatedAt: this.moment().format(),
         status: this.status.Active
@@ -156,28 +149,14 @@ export class Base {
         .collection(this.collection)
         .doc(documentId)
         .update(updatedData);
-      return 'restore successfully.';
+      return true;
     } catch (error) {
       console.log("Error");
       throw Promise.reject(error);
     }
   }
 
-  async includOptionalField(data, name, extendedModel) {
-    try {
-      let extendData = data;
-      const fetchedData = await extendedModel.getAll();
-
-      fetchedData.forEach(d => {
-        if (d.documentId === extendData[`${name}_documentId`]) {
-          extendData[name] = d;
-        }
-      });
-
-      return extendData;
-    } catch (error) {
-      console.log("Error");
-      throw Promise.reject(error);
-    }
-  }
+  
 }
+
+export default CRUD;

@@ -1,39 +1,25 @@
 import "@babel/polyfill";
-import {
-    firebaseRegister
-} from './FirebaseService/register';
 
-import {
-    cat
-} from './FirebaseService/CloundFireStore/model';
+import FirebaseService from './FirebaseService';
+import User from './FirebaseService/CloundFireStore/User';
+import Cat from './FirebaseService/CloundFireStore/Cat';
 
-import {
-    firebaseStorage
-} from './FirebaseService/Storage';
+const firebaseService = new FirebaseService();
 
-import {
-    firebaseAuth
-} from './FirebaseService/Authentication';
+firebaseService.start();
 
-import {
-    servicesWorker
-} from './ServicesWorker';
+const firebaseAuth = firebaseService.getFirebaseAuth();
 
-console.log('es6 succesfully!');
-
-servicesWorker.register();
+const user = new User();
+const cat = new Cat();
 
 
-// firebaseRegister.plugin();
-
-// const asyncTest = async () => {
-//     const functionReciveData = (data) => {
-//         console.log('data', data);
-//     }
-//     const data = await cat.getAll();
-//     console.log('data', data);
+const asyncTest = async () => {
     
-// }
+    const data = await cat.get();
+    console.log(data);
+   
+}
 
 // async function handleChangeFile() {
 //     console.log('Hello World');
@@ -46,5 +32,5 @@ servicesWorker.register();
 
 
 
-// asyncTest();
+asyncTest();
 
